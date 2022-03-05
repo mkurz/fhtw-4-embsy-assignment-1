@@ -43,10 +43,31 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
+/* Definitions for mallocTask1 */
+osThreadId_t mallocTask1Handle;
+const osThreadAttr_t mallocTask1_attributes = {
+  .name = "mallocTask1",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for mallocTask2 */
+osThreadId_t mallocTask2Handle;
+const osThreadAttr_t mallocTask2_attributes = {
+  .name = "mallocTask2",
+  .stack_size = 160 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for mallocTask3 */
+osThreadId_t mallocTask3Handle;
+const osThreadAttr_t mallocTask3_attributes = {
+  .name = "mallocTask3",
+  .stack_size = 192 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for watchMemTask */
+osThreadId_t watchMemTaskHandle;
+const osThreadAttr_t watchMemTask_attributes = {
+  .name = "watchMemTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -58,7 +79,10 @@ const osThreadAttr_t defaultTask_attributes = {
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-void StartDefaultTask(void *argument);
+void task1_allocate_memory(void *argument);
+void task2_allocate_memory(void *argument);
+void task3_allocate_memory(void *argument);
+void watch_allocated_memory(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -152,8 +176,17 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* creation of mallocTask1 */
+  mallocTask1Handle = osThreadNew(task1_allocate_memory, NULL, &mallocTask1_attributes);
+
+  /* creation of mallocTask2 */
+  mallocTask2Handle = osThreadNew(task2_allocate_memory, NULL, &mallocTask2_attributes);
+
+  /* creation of mallocTask3 */
+  mallocTask3Handle = osThreadNew(task3_allocate_memory, NULL, &mallocTask3_attributes);
+
+  /* creation of watchMemTask */
+  watchMemTaskHandle = osThreadNew(watch_allocated_memory, NULL, &watchMemTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -299,14 +332,14 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_task1_allocate_memory */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the mallocTask1 thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_task1_allocate_memory */
+void task1_allocate_memory(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
@@ -315,6 +348,60 @@ void StartDefaultTask(void *argument)
     osDelay(1);
   }
   /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_task2_allocate_memory */
+/**
+* @brief Function implementing the mallocTask2 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_task2_allocate_memory */
+void task2_allocate_memory(void *argument)
+{
+  /* USER CODE BEGIN task2_allocate_memory */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END task2_allocate_memory */
+}
+
+/* USER CODE BEGIN Header_task3_allocate_memory */
+/**
+* @brief Function implementing the mallocTask3 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_task3_allocate_memory */
+void task3_allocate_memory(void *argument)
+{
+  /* USER CODE BEGIN task3_allocate_memory */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END task3_allocate_memory */
+}
+
+/* USER CODE BEGIN Header_watch_allocated_memory */
+/**
+* @brief Function implementing the watchMemTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_watch_allocated_memory */
+void watch_allocated_memory(void *argument)
+{
+  /* USER CODE BEGIN watch_allocated_memory */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END watch_allocated_memory */
 }
 
 /**
