@@ -54,14 +54,14 @@ const osThreadAttr_t mallocTask1_attributes = {
 osThreadId_t mallocTask2Handle;
 const osThreadAttr_t mallocTask2_attributes = {
   .name = "mallocTask2",
-  .stack_size = 160 * 4,
+  .stack_size = 132 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for mallocTask3 */
 osThreadId_t mallocTask3Handle;
 const osThreadAttr_t mallocTask3_attributes = {
   .name = "mallocTask3",
-  .stack_size = 192 * 4,
+  .stack_size = 136 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for watchMemTask */

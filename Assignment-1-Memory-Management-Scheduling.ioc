@@ -1,7 +1,7 @@
 #MicroXplorer Configuration settings - do not modify
 FREERTOS.FootprintOK=true
 FREERTOS.IPParameters=Tasks01,configENABLE_FPU,configUSE_NEWLIB_REENTRANT,FootprintOK
-FREERTOS.Tasks01=mallocTask1,24,128,task1_allocate_memory,Default,NULL,Dynamic,NULL,NULL;mallocTask2,24,160,task2_allocate_memory,Default,NULL,Dynamic,NULL,NULL;mallocTask3,24,192,task3_allocate_memory,Default,NULL,Dynamic,NULL,NULL;watchMemTask,24,128,watch_allocated_memory,Default,NULL,Dynamic,NULL,NULL
+FREERTOS.Tasks01=mallocTask1,24,128,task1_allocate_memory,Default,NULL,Dynamic,NULL,NULL;mallocTask2,24,132,task2_allocate_memory,Default,NULL,Dynamic,NULL,NULL;mallocTask3,24,136,task3_allocate_memory,Default,NULL,Dynamic,NULL,NULL;watchMemTask,24,128,watch_allocated_memory,Default,NULL,Dynamic,NULL,NULL
 FREERTOS.configENABLE_FPU=1
 FREERTOS.configUSE_NEWLIB_REENTRANT=1
 File.Version=6
