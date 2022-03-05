@@ -22,6 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
 
 /* USER CODE END Includes */
 
@@ -65,6 +66,36 @@ void StartDefaultTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+/* Print given character on UART 2. Translate '\n' to "\r\n" on the fly. */
+int __io_putchar(int ch)
+{
+  int ret;
+  while ((ret=HAL_UART_GetState(&huart2)) != HAL_UART_STATE_READY)
+    ;
+
+  if (ch == '\n')
+  {
+    static uint8_t buf[2] = { '\r', '\n' };
+    HAL_UART_Transmit_IT(&huart2, buf, sizeof(buf));
+  }
+  else
+  {
+    static char buf;
+    buf = ch;
+    HAL_UART_Transmit_IT(&huart2, (uint8_t *)&buf, 1);
+  }
+  return ch;
+}
+
+int _write(int file, char *ptr, int len)
+{
+  for (int DataIdx = 0; DataIdx < len; DataIdx++)
+  {
+    __io_putchar(*ptr++);
+  }
+  return len;
+}
 
 /* USER CODE END 0 */
 
