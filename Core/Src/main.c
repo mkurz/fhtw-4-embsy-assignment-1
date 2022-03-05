@@ -85,7 +85,7 @@ void task3_allocate_memory(void *argument);
 void watch_allocated_memory(void *argument);
 
 /* USER CODE BEGIN PFP */
-
+void recursive_function(int);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -330,6 +330,18 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+/**
+  * @brief  Recursive function which just calls itself to allocate stack size.
+  * @param  count: Used to count how often the function was called. Recursion stops when value is 20.
+  * @retval None
+  */
+void recursive_function(int count) {
+  osDelay(900);
+  if (count < 20) {
+    recursive_function(++count);
+  }
+  // Stop after calling the method 20 times recursive to not overflow and kill the MCU
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_task1_allocate_memory */
@@ -345,7 +357,7 @@ void task1_allocate_memory(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    recursive_function(0);
   }
   /* USER CODE END 5 */
 }
@@ -363,7 +375,7 @@ void task2_allocate_memory(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    recursive_function(0);
   }
   /* USER CODE END task2_allocate_memory */
 }
@@ -381,7 +393,7 @@ void task3_allocate_memory(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    recursive_function(0);
   }
   /* USER CODE END task3_allocate_memory */
 }
@@ -396,10 +408,20 @@ void task3_allocate_memory(void *argument)
 void watch_allocated_memory(void *argument)
 {
   /* USER CODE BEGIN watch_allocated_memory */
+  osThreadAttr_t thread_attrs[] = { mallocTask1_attributes, mallocTask2_attributes, mallocTask3_attributes };
+  osThreadId_t thread_ids[] = { mallocTask1Handle, mallocTask2Handle, mallocTask3Handle };
+  size_t total_threads = sizeof(thread_attrs) / sizeof(thread_attrs[0]);
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    printf("\n"); // Just empty line for better readability
+    for(int i = 0; i < total_threads; i++)
+    {
+      printf("Remaining stack size for %s: %lu bytes of total %lu bytes\n",
+        thread_attrs[i].name, osThreadGetStackSpace(thread_ids[i]), thread_attrs[i].stack_size);
+    }
+    osDelay(1000);
   }
   /* USER CODE END watch_allocated_memory */
 }
